@@ -1,9 +1,11 @@
 package app.preach.gospel.db
 
-import io.getquill._
-import zio._
-import zio.config._
-import zio.config.typesafe.TypesafeConfigProvider
+import io.getquill.*
+import zio.*
+import zio.config.*
+import zio.config.typesafe.*
+import zio.config.magnolia.*
+import zio.config.magnolia.DeriveConfig.* // ✅ 自动导出 Config[DbConfig]
 
 final case class DbConfig(
     url: String,
@@ -13,22 +15,13 @@ final case class DbConfig(
 )
 
 object DbContext {
-  lazy val live: ZLayer[Any, Throwable, PostgresZioJdbcContext[SnakeCase]] = {
+  lazy val live: ZLayer[Any, Throwable, PostgresZioJdbcContext[SnakeCase]] =
     ZLayer.scoped {
+      val configProvider = TypesafeConfigProvider.fromResourcePath() // ❗直接作为值
       for {
-        config <- ZIO
-          .config(DbConfigDescriptor)
-          .provide(TypesafeConfigProvider.fromResourcePath())
-        ctx <- ZIO.attempt {
-          new PostgresZioJdbcContext(SnakeCase)
-        }
+        config <- configProvider.load[DbConfig] // ✅ 这里只是调用返回 ZIO
+        _ <- ZIO.logInfo(s"Loaded DB config: ${config.url}")
+        ctx <- ZIO.attempt(new PostgresZioJdbcContext(SnakeCase))
       } yield ctx
     }
-  }
-
-  val DbConfigDescriptor: Config[DbConfig] =
-    (descriptor[String]("db.url") zip
-      descriptor[String]("db.user") zip
-      descriptor[String]("db.password") zip
-      descriptor[String]("db.driver")).to[DbConfig]
 }

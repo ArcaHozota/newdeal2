@@ -1,4 +1,4 @@
-package model
+package app.preach.gospel.model
 
 import zio.json._
 import java.time.OffsetDateTime
