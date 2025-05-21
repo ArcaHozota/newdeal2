@@ -3,7 +3,7 @@
 ThisBuild / scalaVersion := "3.3.5" // 用你项目的实际版本
 ThisBuild / organization := "app.preach.gospel"
 
-val zioVersion: String = "2.1.17"
+val zioVersion: String = "2.1.18"
 val zioConfigVersion: String = "4.0.4"
 val zioHttpVersion: String = "3.2.0"
 // ------------------------------------------------------------
@@ -13,7 +13,7 @@ lazy val root = (project in file("."))
     name := "newdeal2",
     // 核心依賴
     libraryDependencies ++= Seq(
-      // ZIO 核心協程庫（必需）
+      // https://mvnrepository.com/artifact/dev.zio/zio
       "dev.zio" %% "zio" % zioVersion,
       // ZIO HTTP 3 ── 最新穩定版 3.2.0（2025-03-26 發佈）
       "dev.zio" %% "zio-http" % zioHttpVersion, // ← 只有這一行即可把框架拉下來
