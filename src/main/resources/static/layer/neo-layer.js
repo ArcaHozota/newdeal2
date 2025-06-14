@@ -18,7 +18,7 @@
  * -----------------------------------------------------------
 */
 
-; !function(window, undefined) {
+; !function (window, undefined) {
 	"use strict";
 
 	/* ------------------------------------------------------------
@@ -254,7 +254,7 @@
 	};
 
 	// ES10+ 纯原生实现
-	const Class = function(settings = {}) {
+	const Class = function (settings = {}) {
 		const that = this;
 
 		/** 等待 <body> 就绪后再创建 */
@@ -312,7 +312,7 @@
 	};
 
 	//容器
-	Class.pt.vessel = function(conType, callback) {
+	Class.pt.vessel = function (conType, callback) {
 		var that = this, times = that.index, config = that.config;
 		var zIndex = config.zIndex + times, titype = typeof config.title === 'object';
 		var ismax = config.maxmin && (config.type === 1 || config.type === 2);
@@ -394,7 +394,7 @@
 	// ---------------------------------------------------------------------
 	// 替换原 jQuery 版：Class.pt.creat
 	// ---------------------------------------------------------------------
-	Class.pt.creat = function() {
+	Class.pt.creat = function () {
 		const that = this;
 		const cfg = that.config;
 		const times = that.index;
@@ -563,7 +563,7 @@
 	};
 
 	/* 自适应（无 jQuery 版） */
-	Class.pt.auto = function(index) {
+	Class.pt.auto = function (index) {
 		const that = this;
 		const cfg = that.config;
 		const layero = document.getElementById(`${doms[0]}${index}`);
@@ -622,7 +622,7 @@
 	};
 
 	/* 计算坐标（无 jQuery 版） */
-	Class.pt.offset = function() {
+	Class.pt.offset = function () {
 		const that = this;
 		const cfg = that.config;
 		const layero = that.layero;                      // HTMLElement
@@ -684,7 +684,7 @@
 		layero.style.left = typeof left === 'number' ? `${left}px` : left;
 	};
 
-	Class.pt.tips = function() {
+	Class.pt.tips = function () {
 		const that = this;
 		const config = that.config;
 		const layero = that.layero;
@@ -793,7 +793,7 @@
 		layero.style.top = `${goal.tipTop - scrollY}px`;
 	};
 
-	Class.pt.move = function() {
+	Class.pt.move = function () {
 		const that = this;
 		const cfg = that.config;
 		const layero = that.layero;
@@ -902,7 +902,7 @@
 		return that;
 	};
 
-	Class.pt.callback = function() {
+	Class.pt.callback = function () {
 		const that = this;
 		const layero = that.layero;
 		const config = that.config;
@@ -981,7 +981,7 @@
 
 		// ------------------ 最大化 / 还原 ------------------
 		const maxBtn = layero.querySelector('.layui-layer-max');
-		maxBtn?.addEventListener('click', function() {
+		maxBtn?.addEventListener('click', function () {
 			if (this.classList.contains('layui-layer-maxmin')) {
 				layer.restore(that.index);
 				if (typeof config.restore === 'function') {
@@ -1004,7 +1004,7 @@
 	};
 
 	// for IE6: 恢复被遮罩隐藏的 <select>
-	ready.reselect = function() {
+	ready.reselect = function () {
 		const selects = document.querySelectorAll('select');
 
 		selects.forEach(select => {
@@ -1019,7 +1019,7 @@
 		});
 	};
 
-	Class.pt.IE6 = function(layero) {
+	Class.pt.IE6 = function (layero) {
 		// IE6 bug workaround：隐藏未被弹层包裹的 select 元素
 		const selects = document.querySelectorAll('select');
 
@@ -1035,14 +1035,14 @@
 	};
 
 	// 需依赖原型的对外方法
-	Class.pt.openLayer = function() {
+	Class.pt.openLayer = function () {
 		const that = this;
 
 		// 将当前窗口的 zIndex 写入 layer.zIndex
 		layer.zIndex = that.config.zIndex;
 
 		// 对外提供：设置某个 layero 的置顶函数
-		layer.setTop = function(layero) {
+		layer.setTop = function (layero) {
 			if (!layero) return layer.zIndex;
 
 			// 提取当前 z-index（从 style 属性中）
@@ -1063,7 +1063,7 @@
 		};
 	};
 
-	ready.record = function(layero) {
+	ready.record = function (layero) {
 		if (!layero) return;
 
 		// 1️⃣ 获取宽高、top、left（含 margin-left）
@@ -1087,7 +1087,7 @@
 		layero.setAttribute('area', area.join(','));
 	};
 
-	ready.rescollbar = function(index) {
+	ready.rescollbar = function (index) {
 		const html = doms.html;  // 通常是 document.documentElement
 
 		if (html.getAttribute('layer-full') === String(index)) {
@@ -1107,7 +1107,7 @@
 
 	window.layer = layer;
 
-	layer.getChildFrame = function(selector, index) {
+	layer.getChildFrame = function (selector, index) {
 		// 如果未传 index，则取第一个 iframe 的 times 属性
 		if (!index) {
 			const iframe = document.querySelector(`.${doms[4]}`);
@@ -1125,7 +1125,7 @@
 		return iframe.contentDocument.querySelector(selector);
 	};
 
-	layer.getFrameIndex = function(name) {
+	layer.getFrameIndex = function (name) {
 		const iframe = document.getElementById(name);
 		if (!iframe) return null;
 
@@ -1135,7 +1135,7 @@
 		return parentLayer.getAttribute('times');
 	};
 
-	layer.iframeAuto = function(index) {
+	layer.iframeAuto = function (index) {
 		if (!index) return;
 
 		// 获取子 iframe 的 HTML 元素
@@ -1162,7 +1162,7 @@
 		if (iframe) iframe.style.height = `${iframeHeight}px`;
 	};
 
-	layer.iframeSrc = function(index, url) {
+	layer.iframeSrc = function (index, url) {
 		const layero = document.getElementById(`${doms[0]}${index}`);
 		if (!layero) return;
 
@@ -1172,7 +1172,7 @@
 		}
 	};
 
-	layer.style = function(index, options = {}, limit) {
+	layer.style = function (index, options = {}, limit) {
 		const layero = document.getElementById(`${doms[0]}${index}`);
 		if (!layero) return;
 
@@ -1230,7 +1230,7 @@
 		}
 	};
 
-	layer.min = function(index, options = {}) {
+	layer.min = function (index, options = {}) {
 		const layero = document.getElementById(`${doms[0]}${index}`);
 		const shadeo = document.getElementById(`${doms.SHADE}${index}`);
 		if (!layero) return;
@@ -1296,7 +1296,7 @@
 		}
 	};
 
-	layer.restore = function(index) {
+	layer.restore = function (index) {
 		const layero = document.getElementById(`${doms[0]}${index}`);
 		const shadeo = document.getElementById(`${doms.SHADE}${index}`);
 		if (!layero) return;
@@ -1339,7 +1339,7 @@
 		}
 	};
 
-	layer.full = function(index) {
+	layer.full = function (index) {
 		const layero = document.getElementById(`${doms[0]}${index}`);
 		if (!layero) return;
 
@@ -1371,7 +1371,7 @@
 		}, 100);
 	};
 
-	layer.title = function(name, index) {
+	layer.title = function (name, index) {
 		index = index || layer.index;
 		const layero = document.getElementById(doms[0] + index);
 		if (!layero) return;
@@ -1383,7 +1383,7 @@
 	};
 
 	//关闭layer总方法
-	layer.close = function(index, callback) {
+	layer.close = function (index, callback) {
 		const layerId = doms[0] + index;
 		const layero = document.getElementById(layerId);
 		if (!layero) return;
@@ -1460,7 +1460,7 @@
 		}
 	};
 
-	layer.closeAll = function(type, callback) {
+	layer.closeAll = function (type, callback) {
 		if (typeof type === 'function') {
 			callback = type;
 			type = null;
@@ -1495,12 +1495,12 @@
 	
 	 */
 
-	var cache = layer.cache || {}, skin = function(type) {
+	var cache = layer.cache || {}, skin = function (type) {
 		return (cache.skin ? (' ' + cache.skin + ' ' + cache.skin + '-' + type) : '');
 	};
 
 	//仿系统prompt
-	layer.prompt = function(options, yes) {
+	layer.prompt = function (options, yes) {
 		var style = '';
 		options = options || {};
 
@@ -1511,7 +1511,7 @@
 			style = 'style="width: ' + area[0] + '; height: ' + area[1] + ';"';
 			delete options.area;
 		}
-		var prompt, content = options.formType == 2 ? '<textarea class="layui-layer-input"' + style + '></textarea>' : function() {
+		var prompt, content = options.formType == 2 ? '<textarea class="layui-layer-input"' + style + '></textarea>' : function () {
 			return '<input type="' + (options.formType == 1 ? 'password' : 'text') + '" class="layui-layer-input">';
 		}();
 
@@ -1524,13 +1524,13 @@
 			, content: content
 			, skin: 'layui-layer-prompt' + skin('prompt')
 			, maxWidth: win.width()
-			, success: function(layero) {
+			, success: function (layero) {
 				prompt = layero.find('.layui-layer-input');
 				prompt.val(options.value || '').focus();
 				typeof success === 'function' && success(layero);
 			}
 			, resize: false
-			, yes: function(index) {
+			, yes: function (index) {
 				var value = prompt.val();
 				if (value === '') {
 					prompt.focus();
@@ -1543,7 +1543,7 @@
 		}, options));
 	};
 
-	layer.tab = function(options = {}) {
+	layer.tab = function (options = {}) {
 		const tab = options.tab || [];
 		const THIS = 'layui-this';
 		const originalSuccess = options.success;
@@ -1572,7 +1572,7 @@
 			resize: false,
 			title: titleHTML,
 			content: contentHTML,
-			success: function(layero) {
+			success: function (layero) {
 				const titleContainer = layero.querySelector('.layui-layer-title');
 				const btns = titleContainer ? titleContainer.children : [];
 				const mainItems = layero.querySelectorAll('.layui-layer-tabmain .layui-layer-tabli');
@@ -1603,7 +1603,7 @@
 	};
 
 	//相册层
-	layer.photos = function(options, loop, key) {
+	layer.photos = function (options, loop, key) {
 		var dict = {};
 		options = options || {};
 		if (!options.photos) return;
@@ -1679,7 +1679,7 @@
 		}
 
 		//上一张
-		dict.imgprev = function(key) {
+		dict.imgprev = function (key) {
 			dict.imgIndex--;
 			if (dict.imgIndex < 1) {
 				dict.imgIndex = data.length;
@@ -1688,7 +1688,7 @@
 		};
 
 		//下一张
-		dict.imgnext = function(key, errorMsg) {
+		dict.imgnext = function (key, errorMsg) {
 			dict.imgIndex++;
 			if (dict.imgIndex > data.length) {
 				dict.imgIndex = 1;
@@ -1698,7 +1698,7 @@
 		};
 
 		//方向键
-		dict.keyup = function(event) {
+		dict.keyup = function (event) {
 			if (!dict.end) {
 				var code = event.keyCode;
 				event.preventDefault();
@@ -1713,25 +1713,25 @@
 		}
 
 		//切换
-		dict.tabimg = function(key) {
+		dict.tabimg = function (key) {
 			if (data.length <= 1) return;
 			photos.start = dict.imgIndex - 1;
 			layer.close(dict.index);
 			return layer.photos(options, true, key);
-			setTimeout(function() {
+			setTimeout(function () {
 				layer.photos(options, true, key);
 			}, 200);
 		}
 
 		//一些动作
-		dict.event = function() {
+		dict.event = function () {
 
-			dict.bigimg.find('.layui-layer-imgprev').on('click', function(event) {
+			dict.bigimg.find('.layui-layer-imgprev').on('click', function (event) {
 				event.preventDefault();
 				dict.imgprev(true);
 			});
 
-			dict.bigimg.find('.layui-layer-imgnext').on('click', function(event) {
+			dict.bigimg.find('.layui-layer-imgnext').on('click', function (event) {
 				event.preventDefault();
 				dict.imgnext(true);
 			});
@@ -1746,11 +1746,11 @@
 			if (img.complete) {
 				return callback(img);
 			}
-			img.onload = function() {
+			img.onload = function () {
 				img.onload = null;
 				callback(img);
 			};
-			img.onerror = function(e) {
+			img.onerror = function (e) {
 				img.onerror = null;
 				error(e);
 			};
@@ -1761,7 +1761,7 @@
 			scrollbar: false
 		});
 
-		loadImage(data[start].src, function(img) {
+		loadImage(data[start].src, function (img) {
 			layer.close(dict.loadi);
 
 			//切换图片时不出现动画
@@ -1805,7 +1805,7 @@
 				skin: 'layui-layer-photos' + skin('photos'),
 				content: '<div class="layui-layer-phimg">'
 					+ '<img src="' + data[start].src + '" alt="' + (data[start].alt || '') + '" layer-pid="' + data[start].pid + '">'
-					+ function() {
+					+ function () {
 						if (data.length > 1) {
 							return '<div class="layui-layer-imgsee">'
 								+ '<span class="layui-layer-imguide"><a href="javascript:;" class="layui-layer-iconext layui-layer-imgprev"></a><a href="javascript:;" class="layui-layer-iconext layui-layer-imgnext"></a></span>'
@@ -1832,12 +1832,12 @@
 					document.removeEventListener('keyup', dict.keyup);
 				}
 			}, options));
-		}, function() {
+		}, function () {
 			layer.close(dict.loadi);
 			layer.msg('&#x5F53;&#x524D;&#x56FE;&#x7247;&#x5730;&#x5740;&#x5F02;&#x5E38;<br>&#x662F;&#x5426;&#x7EE7;&#x7EED;&#x67E5;&#x770B;&#x4E0B;&#x4E00;&#x5F20;&#xFF1F;', {
 				time: 30000,
 				btn: ['&#x4E0B;&#x4E00;&#x5F20;', '&#x4E0D;&#x770B;&#x4E86;'],
-				yes: function() {
+				yes: function () {
 					data.length > 1 && dict.imgnext(true, true);
 				}
 			});
@@ -1864,7 +1864,7 @@
 
 	// 标准 UMD 模板
 	if (typeof define === 'function' && define.amd) {
-		define([], function() {
+		define([], function () {
 			return layer;
 		});
 	} else if (typeof exports === 'object') {
