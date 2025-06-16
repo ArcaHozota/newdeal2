@@ -1,9 +1,9 @@
 package app.preach.gospel
 
-import zio.*
-import zio.http.*
-import app.preach.gospel.db.*
-import app.preach.gospel.model.*
+import zio._
+import zio.http._
+import app.preach.gospel.db._
+import app.preach.gospel.model._
 
 // object MainApp extends ZIOAppDefault {
 
