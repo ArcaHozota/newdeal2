@@ -1,6 +1,6 @@
 package app.preach.gospel.model
 
-import zio.json._
+import zio.json.*
 import java.time.OffsetDateTime
 
 case class Student(

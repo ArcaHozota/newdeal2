@@ -1,8 +1,8 @@
 package app.preach.gospel.repository.impl
 
-import io.getquill._
+import io.getquill.*
 import javax.sql.DataSource
-import zio._
+import zio.*
 import app.preach.gospel.repository.StudentRepository
 import app.preach.gospel.model.Student
 

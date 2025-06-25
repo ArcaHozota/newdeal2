@@ -1,6 +1,6 @@
 package app.preach.gospel.db
 
-import io.getquill._
+import io.getquill.*
 import io.getquill.jdbczio.Quill
 import zio.ZLayer
 

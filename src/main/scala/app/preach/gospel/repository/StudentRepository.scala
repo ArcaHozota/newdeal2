@@ -1,7 +1,7 @@
 package app.preach.gospel.repository
 
-import zio._
-import app.preach.gospel.model._
+import zio.*
+import app.preach.gospel.model.Student
 
 trait StudentRepository {
   def insert(student: Student): Task[Long]
