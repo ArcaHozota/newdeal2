@@ -7,10 +7,18 @@ import app.preach.gospel.repository.StudentRepository
 import app.preach.gospel.model.Student
 
 final class StudentRepositoryImpl(ds: DataSource) extends StudentRepository {
-  import app.preach.gospel.db.QuillContext._
+  import app.preach.gospel.db.QuillContext.*
 
   override def insert(student: Student): Task[Long] =
     run(query[Student].insertValue(lift(student)))
+      .provideEnvironment(ZEnvironment(ds));
+
+  override def update(student: Student): Task[Long] =
+    run(
+      query[Student]
+        .filter(s => s.visibleFlg == lift(true) && s.id == lift(student.id))
+        .updateValue(lift(student))
+    )
       .provideEnvironment(ZEnvironment(ds));
 
   override def findById(id: Long): Task[Option[Student]] =
@@ -24,11 +32,4 @@ final class StudentRepositoryImpl(ds: DataSource) extends StudentRepository {
     run(query[Student].filter(_.visibleFlg == lift(true)))
       .provideEnvironment(ZEnvironment(ds));
 
-  override def update(student: Student): Task[Long] =
-    run(
-      query[Student]
-        .filter(s => s.visibleFlg == lift(true) && s.id == lift(student.id))
-        .updateValue(lift(student))
-    )
-      .provideEnvironment(ZEnvironment(ds));
 }
