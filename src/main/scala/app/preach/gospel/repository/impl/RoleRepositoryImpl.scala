@@ -17,14 +17,14 @@ final class RoleRepositoryImpl(ds: DataSource) extends RoleRepository {
   override def update(role: Role): Task[Long] =
     run(
       query[Role]
-        .filter(s => s.visibleFlg == lift(true) && s.id == lift(role.id))
+        .filter(r => r.visibleFlg == lift(true) && r.id == lift(role.id))
         .updateValue(lift(role))
     )
       .provideEnvironment(ZEnvironment(ds));
 
   override def findById(id: Long): Task[Option[Role]] =
     run(
-      query[Role].filter(s => s.visibleFlg == lift(true) && s.id == lift(id))
+      query[Role].filter(r => r.visibleFlg == lift(true) && r.id == lift(id))
     )
       .map(_.headOption)
       .provideEnvironment(ZEnvironment(ds));
