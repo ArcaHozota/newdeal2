@@ -8,7 +8,6 @@ import zio.*
 import javax.sql.DataSource
 
 final class RoleAuthRepositoryImpl(ds: DataSource) extends RoleAuthRepository {
-
   import app.preach.gospel.db.QuillContext.*
 
   override def insert(roleAuth: RoleAuth): Task[Long] =
