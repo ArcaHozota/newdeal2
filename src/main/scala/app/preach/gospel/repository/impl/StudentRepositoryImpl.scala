@@ -17,7 +17,15 @@ final class StudentRepositoryImpl(ds: DataSource) extends StudentRepository {
     run(
       query[Student]
         .filter(s => s.visibleFlg == lift(true) && s.id == lift(student.id))
-        .updateValue(lift(student))
+        .update(
+          _.loginAccount -> lift(student.loginAccount),
+          _.username -> lift(student.username),
+          _.password -> lift(student.password),
+          _.roleId -> lift(student.roleId),
+          _.email -> lift(student.email),
+          _.dateOfBirth -> lift(student.dateOfBirth),
+          _.updatedTime -> lift(student.updatedTime)
+        )
     )
       .provideEnvironment(ZEnvironment(ds));
 

@@ -18,7 +18,7 @@ final class RoleRepositoryImpl(ds: DataSource) extends RoleRepository {
     run(
       query[Role]
         .filter(r => r.visibleFlg == lift(true) && r.id == lift(role.id))
-        .updateValue(lift(role))
+        .update(_.name -> lift(role.name))
     )
       .provideEnvironment(ZEnvironment(ds));
 
