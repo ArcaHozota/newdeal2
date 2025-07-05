@@ -2,11 +2,10 @@ package app.preach.gospel.service.impl
 
 import zio.*
 import app.preach.gospel.pojo.{BookDto, ChapterDto, PhraseDto}
-import app.preach.gospel.db.{DatabaseError, DbConnectionFailed, DbQueryFailed}
+import app.preach.gospel.db.{DatabaseError, DbQueryFailed}
 import app.preach.gospel.repository.*
-import app.preach.gospel.model.{Book, Chapter, Phrase}
+import app.preach.gospel.model.{Book, Phrase}
 import app.preach.gospel.service.BookService
-import io.getquill.autoQuote
 
 final class BookServiceImpl(
     bookRepo: BookRepository,
@@ -36,38 +35,17 @@ final class BookServiceImpl(
   override def getChaptersByBookId(
       id: String
   ): IO[DatabaseError, List[ChapterDto]] = {
-    if (id.forall(_.isDigit)) {
-      val queryEffect: IO[DatabaseError, List[Chapter]] =
-        chapterRepo.findByBookId(id.toShort)
-      val result: IO[DatabaseError, List[ChapterDto]] = {
-        queryEffect.map { chapters =>
-          chapters.map(chapter =>
-            ChapterDto(
-              id = chapter.id.toString,
-              name = chapter.name,
-              nameJp = chapter.nameJp,
-              bookId = chapter.bookId.toString
-            )
-          )
-        }
+    val bookId: Short =
+      if (id.forall(_.isDigit)) id.toShort else 1
+    chapterRepo.findByBookId(bookId).map { chapters =>
+      chapters.map { chapter =>
+        ChapterDto(
+          id = chapter.id.toString,
+          name = chapter.name,
+          nameJp = chapter.nameJp,
+          bookId = chapter.bookId.toString
+        )
       }
-      result
-    } else {
-      val queryEffect: IO[DatabaseError, List[Chapter]] =
-        chapterRepo.findByBookId(1) // 默认ID 1
-      val result: IO[DatabaseError, List[ChapterDto]] = {
-        queryEffect.map { chapters =>
-          chapters.map(chapter =>
-            ChapterDto(
-              id = chapter.id.toString,
-              name = chapter.name,
-              nameJp = chapter.nameJp,
-              bookId = chapter.bookId.toString
-            )
-          )
-        }
-      }
-      result
     }
   }
 
@@ -101,12 +79,13 @@ final class BookServiceImpl(
             .update(updatedPhrase)
             .as("String updated")
         case None =>
-          val newPhrase = PhraseDto(
-            id = ((chapterId * 1000) + id).toString,
+          val newPhrase = Phrase(
+            id = (chapterId * 1000) + id,
             name = composedName,
             textEn = textEn._1,
             textJp = phraseDto.textJp,
-            chapterId = chapterId.toString
+            changeLine = textEn._2,
+            chapterId = chapterId
           )
           phraseRepo
             .insert(newPhrase)
@@ -114,4 +93,5 @@ final class BookServiceImpl(
       }
     } yield result
   }
+
 }

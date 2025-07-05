@@ -24,19 +24,28 @@ final class PhraseRepositoryImpl(ds: DataSource) extends PhraseRepository {
           DbQueryFailed("Failed to insert phrase", ex)
       };
 
-    override def update(phrase: Phrase): IO[DatabaseError, Long] =
-      run(query[Phrase].filter(_.id==lift(phrase.id))
-        .insertValue(lift(phrase)))
-        .provideEnvironment(ZEnvironment(ds))
-        .mapError {
-          case ex: java.sql.SQLException =>
-            DbConnectionFailed(
-              "Failed to insert phrase (DB connection error)",
-              ex
-            )
-          case ex =>
-            DbQueryFailed("Failed to insert phrase", ex)
-        };
+  override def update(phrase: Phrase): IO[DatabaseError, Long] =
+    run(
+      query[Phrase]
+        .filter(_.id == lift(phrase.id))
+        .update(
+          _.name -> lift(phrase.name),
+          _.textEn -> lift(phrase.textEn),
+          _.textJp -> lift(phrase.textJp),
+          _.changeLine -> lift(phrase.changeLine),
+          _.chapterId -> lift(phrase.chapterId)
+        )
+    )
+      .provideEnvironment(ZEnvironment(ds))
+      .mapError {
+        case ex: java.sql.SQLException =>
+          DbConnectionFailed(
+            "Failed to insert phrase (DB connection error)",
+            ex
+          )
+        case ex =>
+          DbQueryFailed("Failed to insert phrase", ex)
+      };
 
   override def findById(id: Long): IO[DatabaseError, Option[Phrase]] =
     run(query[Phrase].filter(_.id == lift(id)))
