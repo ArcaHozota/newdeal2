@@ -1,7 +1,8 @@
 package app.preach.gospel.model
 
 import zio.json.*
-import java.time.OffsetDateTime
+
+import java.time.{LocalDate, OffsetDateTime}
 
 case class Student(
     id: Long,
@@ -9,7 +10,7 @@ case class Student(
     password: String,
     username: String,
     email: Option[String],
-    dateOfBirth: String,
+    dateOfBirth: LocalDate,
     roleId: Long,
     updatedTime: Option[OffsetDateTime],
     visibleFlg: Boolean
