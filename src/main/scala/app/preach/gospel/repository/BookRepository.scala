@@ -1,10 +1,11 @@
 package app.preach.gospel.repository
 
-import app.preach.gospel.model.Book
 import zio.*
+import app.preach.gospel.model.Book
+import app.preach.gospel.db.DatabaseError
 
 trait BookRepository {
-  def insert(book: Book): Task[Long]
-  def findById(id: Long): Task[List[Book]]
-  def findAll(): Task[List[Book]]
+  def insert(book: Book): IO[DatabaseError, Long]
+  def findById(id: Short): IO[DatabaseError, Option[Book]]
+  def findAll(): IO[DatabaseError, List[Book]]
 }
