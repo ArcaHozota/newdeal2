@@ -7,18 +7,38 @@ import zio.*
 
 import javax.sql.DataSource
 
+import app.preach.gospel.db.{DatabaseError, DbQueryFailed, DbConnectionFailed}
+
 final class BookRepositoryImpl(ds: DataSource) extends BookRepository {
   import app.preach.gospel.db.QuillContext.*
 
-  override def insert(book: Book): Task[Long] =
+  override def insert(book: Book): IO[DatabaseError, Long] =
     run(query[Book].insertValue(lift(book)))
-      .provideEnvironment(ZEnvironment(ds));
+      .provideEnvironment(ZEnvironment(ds))
+      .mapError {
+        case ex: java.sql.SQLException =>
+          DbConnectionFailed("Failed to insert book (DB connection error)", ex)
+        case ex =>
+          DbQueryFailed("Failed to insert book", ex)
+      }
 
-  override def findById(id: Long): Task[List[Book]] =
+  override def findById(id: Long): IO[DatabaseError, List[Book]] =
     run(query[Book].filter(_.id == lift(id)))
-      .provideEnvironment(ZEnvironment(ds));
+      .provideEnvironment(ZEnvironment(ds))
+      .mapError {
+        case ex: java.sql.SQLException =>
+          DbConnectionFailed("Failed to find book by ID (DB connection error)", ex)
+        case ex =>
+          DbQueryFailed(s"Failed to find book by ID: $id", ex)
+      }
 
-  override def findAll(): Task[List[Book]] =
-    run(query[Book]).provideEnvironment(ZEnvironment(ds));
-
+  override def findAll(): IO[DatabaseError, List[Book]] =
+    run(query[Book])
+      .provideEnvironment(ZEnvironment(ds))
+      .mapError {
+        case ex: java.sql.SQLException =>
+          DbConnectionFailed("Failed to find all books (DB connection error)", ex)
+        case ex =>
+          DbQueryFailed("Failed to find all books", ex)
+      }
 }
